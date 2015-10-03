@@ -88,8 +88,8 @@ public class HighlightManager implements HighlightDialogFragment.HighlistDismiss
                 }
                 int[] location = new int[2];
                 v.getLocationOnScreen(location);
-                showHighlight(location[0] + left, location[1] + top, location[0] + right,
-                        location[1] + bottom);
+                showHighlight(location[0], location[1], location[0] + right - left,
+                        location[1] + bottom - top);
             }
         });
         it.setActionView(button);
