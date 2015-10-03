@@ -17,15 +17,19 @@ public class HighlightDialogFragment extends DialogFragment {
 
     private HighlistDismissedListener listener;
 
-    private int                       cx;
-    private int                       cy;
+    private int                       left;
+    private int                       top;
+    private int                       right;
+    private int                       bottom;
 
 
-    public void setLocation(int cx, int cy) {
-        this.cx = cx;
-        this.cy = cy;
+    public void setLocation(int left, int top, int right, int bottom) {
+        this.left = left;
+        this.top = top;
+        this.right = right;
+        this.bottom = bottom;
         if (highlightView != null) {
-            highlightView.setLocation(cx, cy);
+            highlightView.setLocation(left, top, right, bottom);
         }
     }
 
@@ -55,7 +59,7 @@ public class HighlightDialogFragment extends DialogFragment {
         overlayInfo.setCancelable(true);
         // Setting the content using prepared XML layout file.
         highlightView = new HighlightView(getActivity());
-        highlightView.setLocation(cx, cy);
+        highlightView.setLocation(left, top, right, bottom);
         overlayInfo.setContentView(highlightView);
         highlightView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,8 +1,5 @@
 package org.puder.highlight;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
@@ -11,9 +8,12 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HighlightManager implements HighlightDialogFragment.HighlistDismissedListener {
 
-    private FragmentActivity activity;
+    private FragmentActivity    activity;
     private List<HighlightItem> items;
 
 
@@ -60,7 +60,8 @@ public class HighlightManager implements HighlightDialogFragment.HighlistDismiss
         View view = activity.findViewById(item.getContentViewId());
         int[] location = new int[2];
         view.getLocationOnScreen(location);
-        showHighlight(location[0], location[1]);
+        showHighlight(location[0], location[1], location[0] + view.getMeasuredWidth(), location[1]
+                + view.getMeasuredHeight());
     }
 
     private void showMenuItem(HighlightMenuItem item) {
@@ -87,13 +88,14 @@ public class HighlightManager implements HighlightDialogFragment.HighlistDismiss
                 }
                 int[] location = new int[2];
                 v.getLocationOnScreen(location);
-                showHighlight(location[0] + (right - left) / 2, location[1] + (bottom - top) / 2);
+                showHighlight(location[0] + left, location[1] + top, location[0] + right,
+                        location[1] + bottom);
             }
         });
         it.setActionView(button);
     }
 
-    private void showHighlight(int cx, int cy) {
+    private void showHighlight(int left, int top, int right, int bottom) {
         FragmentManager fm = activity.getSupportFragmentManager();
         HighlightDialogFragment fragment = (HighlightDialogFragment) fm
                 .findFragmentByTag("HIGHLIGHT");
@@ -102,7 +104,7 @@ public class HighlightManager implements HighlightDialogFragment.HighlistDismiss
             fragment = new HighlightDialogFragment();
             fragment.setListener(this);
         }
-        fragment.setLocation(cx, cy);
+        fragment.setLocation(left, top, right, bottom);
         fm.beginTransaction().add(fragment, "HIGHLIGHT").commit();
     }
 
