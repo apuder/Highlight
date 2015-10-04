@@ -53,9 +53,18 @@ public class HighlightView extends RelativeLayout {
         int margin = (int) context.getResources().getDimension(R.dimen.default_button_margin);
         params.setMargins(margin, margin, margin, margin);
         Button b = new Button(context);
+        // noinspection ResourceType
+        b.setId(1);
         b.setLayoutParams(params);
         b.setText(R.string.default_button_label);
         addView(b);
+    }
+
+    @Override
+    public void setOnClickListener(OnClickListener listener) {
+        // Delegate the click listener to the button
+        // noinspection ResourceType
+        findViewById(1).setOnClickListener(listener);
     }
 
     @Override
