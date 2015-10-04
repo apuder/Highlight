@@ -1,0 +1,5 @@
+<resources>
+
+    <dimen name="default_button_margin">10dp</dimen>
+
+</resources>

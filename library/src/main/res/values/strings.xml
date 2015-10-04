@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Highlight</string>
+    <string name="default_button_label">OK</string>
 </resources>

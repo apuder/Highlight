@@ -10,30 +10,31 @@ import android.view.WindowManager;
 
 public class HighlightDialogFragment extends DialogFragment {
 
-    public interface HighlistDismissedListener {
+    public interface HighlightDismissedListener {
         void onHighlightDismissed();
     }
 
 
-    private HighlistDismissedListener listener;
+    private HighlightDismissedListener listener;
 
-    private int                       left;
-    private int                       top;
-    private int                       right;
-    private int                       bottom;
+    private HighlightView              highlightView;
+
+    private HighlightItem              item;
+    private int                        left;
+    private int                        top;
+    private int                        right;
+    private int                        bottom;
 
 
-    public void setLocation(int left, int top, int right, int bottom) {
+    public void setHighlightItem(HighlightItem item, int left, int top, int right, int bottom) {
+        this.item = item;
         this.left = left;
         this.top = top;
         this.right = right;
         this.bottom = bottom;
-        if (highlightView != null) {
-            highlightView.setLocation(left, top, right, bottom);
-        }
     }
 
-    public void setListener(HighlistDismissedListener listener) {
+    public void setListener(HighlightDismissedListener listener) {
         this.listener = listener;
     }
 
@@ -42,10 +43,6 @@ public class HighlightDialogFragment extends DialogFragment {
         super.onDetach();
         highlightView = null;
     }
-
-
-    private HighlightView highlightView;
-
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -59,7 +56,7 @@ public class HighlightDialogFragment extends DialogFragment {
         overlayInfo.setCancelable(true);
         // Setting the content using prepared XML layout file.
         highlightView = new HighlightView(getActivity());
-        highlightView.setLocation(left, top, right, bottom);
+        highlightView.setHighlightItem(item, left, top, right, bottom);
         overlayInfo.setContentView(highlightView);
         highlightView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +86,6 @@ public class HighlightDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         setCancelable(false);
-        setRetainInstance(true);
         setHasOptionsMenu(false);
     }
 }

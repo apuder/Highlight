@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HighlightManager implements HighlightDialogFragment.HighlistDismissedListener {
+public class HighlightManager implements HighlightDialogFragment.HighlightDismissedListener {
 
     final private static String TAG_FRAGMENT = "HIGHLIGHT";
 
@@ -62,11 +62,11 @@ public class HighlightManager implements HighlightDialogFragment.HighlistDismiss
         View view = activity.findViewById(item.getContentViewId());
         int[] location = new int[2];
         view.getLocationOnScreen(location);
-        showHighlight(location[0], location[1], location[0] + view.getMeasuredWidth(), location[1]
-                + view.getMeasuredHeight());
+        showHighlight(item, location[0], location[1], location[0] + view.getMeasuredWidth(),
+                location[1] + view.getMeasuredHeight());
     }
 
-    private void showMenuItem(HighlightMenuItem item) {
+    private void showMenuItem(final HighlightMenuItem item) {
         final MenuItem it = item.getMenuItem();
 
         ImageView button = new ImageView(activity, null, android.R.attr.actionButtonStyle);
@@ -90,24 +90,27 @@ public class HighlightManager implements HighlightDialogFragment.HighlistDismiss
                 }
                 int[] location = new int[2];
                 v.getLocationOnScreen(location);
-                showHighlight(location[0], location[1], location[0] + right - left, location[1]
-                        + bottom - top);
+                showHighlight(item, location[0], location[1], location[0] + right - left,
+                        location[1] + bottom - top);
             }
         });
         it.setActionView(button);
     }
 
-    private void showHighlight(int left, int top, int right, int bottom) {
+    private void showHighlight(HighlightItem item, int left, int top, int right, int bottom) {
         FragmentManager fm = activity.getSupportFragmentManager();
         HighlightDialogFragment fragment = (HighlightDialogFragment) fm
                 .findFragmentByTag(TAG_FRAGMENT);
 
-        if (fragment == null) {
-            fragment = new HighlightDialogFragment();
-            fragment.setListener(this);
-            fm.beginTransaction().add(fragment, TAG_FRAGMENT).commit();
+        android.support.v4.app.FragmentTransaction transaction = fm.beginTransaction();
+        if (fragment != null) {
+            transaction.remove(fragment);
         }
-        fragment.setLocation(left, top, right, bottom);
+        fragment = new HighlightDialogFragment();
+        fragment.setListener(this);
+        fragment.setHighlightItem(item, left, top, right, bottom);
+        transaction.add(fragment, TAG_FRAGMENT);
+        transaction.commit();
     }
 
     @Override

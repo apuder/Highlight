@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
@@ -17,6 +18,7 @@ public class HighlightView extends RelativeLayout {
 
     private Paint            eraserPaint;
 
+    private HighlightItem    item;
     private int              left;
     private int              top;
     private int              right;
@@ -31,17 +33,29 @@ public class HighlightView extends RelativeLayout {
         eraserPaint.setAlpha(0);
         eraserPaint.setXfermode(xfermode);
         eraserPaint.setAntiAlias(true);
-        Button b = new Button(context);
-        b.setText("Hello");
-        addView(b);
+        addButton(context);
     }
 
-    public void setLocation(int left, int top, int right, int bottom) {
+    public void setHighlightItem(HighlightItem item, int left, int top, int right, int bottom) {
+        this.item = item;
         this.left = left;
         this.top = top;
         this.right = right;
         this.bottom = bottom;
         invalidate();
+    }
+
+    private void addButton(Context context) {
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        int margin = (int) context.getResources().getDimension(R.dimen.default_button_margin);
+        params.setMargins(margin, margin, margin, margin);
+        Button b = new Button(context);
+        b.setLayoutParams(params);
+        b.setText(R.string.default_button_label);
+        addView(b);
     }
 
     @Override
