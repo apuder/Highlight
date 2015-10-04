@@ -13,6 +13,8 @@ import java.util.List;
 
 public class HighlightManager implements HighlightDialogFragment.HighlistDismissedListener {
 
+    final private static String TAG_FRAGMENT = "HIGHLIGHT";
+
     private FragmentActivity    activity;
     private List<HighlightItem> items;
 
@@ -88,8 +90,8 @@ public class HighlightManager implements HighlightDialogFragment.HighlistDismiss
                 }
                 int[] location = new int[2];
                 v.getLocationOnScreen(location);
-                showHighlight(location[0], location[1], location[0] + right - left,
-                        location[1] + bottom - top);
+                showHighlight(location[0], location[1], location[0] + right - left, location[1]
+                        + bottom - top);
             }
         });
         it.setActionView(button);
@@ -98,14 +100,14 @@ public class HighlightManager implements HighlightDialogFragment.HighlistDismiss
     private void showHighlight(int left, int top, int right, int bottom) {
         FragmentManager fm = activity.getSupportFragmentManager();
         HighlightDialogFragment fragment = (HighlightDialogFragment) fm
-                .findFragmentByTag("HIGHLIGHT");
+                .findFragmentByTag(TAG_FRAGMENT);
 
         if (fragment == null) {
             fragment = new HighlightDialogFragment();
             fragment.setListener(this);
+            fm.beginTransaction().add(fragment, TAG_FRAGMENT).commit();
         }
         fragment.setLocation(left, top, right, bottom);
-        fm.beginTransaction().add(fragment, "HIGHLIGHT").commit();
     }
 
     @Override
