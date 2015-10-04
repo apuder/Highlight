@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Highlight Demo</string>
+
+    <string name="highlight1_title">Highlight 1</string>
+    <string name="highlight1_descr">Some explanation for the first highlight.</string>
+    <string name="highlight2_title">Highlight 2</string>
+    <string name="highlight2_descr">Some explanation for the second highlight.</string>
+    <string name="highlight3_title">Highlight 3</string>
+    <string name="highlight3_descr">Some explanation for the third highlight.</string>
 </resources>

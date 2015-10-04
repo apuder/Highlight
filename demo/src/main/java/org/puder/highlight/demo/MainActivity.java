@@ -19,7 +19,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         highlightManager = new HighlightManager(this);
-        highlightManager.addView(R.id.text).setTitle(0);
+        highlightManager.addView(R.id.text).setTitle(R.string.highlight1_title)
+                .setDescriptionId(R.string.highlight1_descr);
+        highlightManager.addView(R.id.button).setTitle(R.string.highlight2_title)
+                .setDescriptionId(R.string.highlight2_descr);
     }
 
     @Override
@@ -27,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
         MenuItemCompat.setShowAsAction(
                 menu.add(Menu.NONE, 0, Menu.NONE, "Add").setIcon(R.drawable.add_icon),
                 MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
-        highlightManager.addMenuItem(menu, 0).setTitle(0).setDescriptionId(0);
+        highlightManager.addMenuItem(menu, 0).setTitle(R.string.highlight3_title)
+                .setDescriptionId(R.string.highlight3_descr);
         return true;
     }
 
