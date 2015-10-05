@@ -1,4 +1,4 @@
-package org.puder.highlight;
+package org.puder.highlight.internal;
 
 import android.app.Dialog;
 import android.graphics.Color;

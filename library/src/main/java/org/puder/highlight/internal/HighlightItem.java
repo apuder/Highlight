@@ -1,4 +1,4 @@
-package org.puder.highlight;
+package org.puder.highlight.internal;
 
 public class HighlightItem {
 

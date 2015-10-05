@@ -8,6 +8,11 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import org.puder.highlight.internal.HighlightContentViewItem;
+import org.puder.highlight.internal.HighlightDialogFragment;
+import org.puder.highlight.internal.HighlightItem;
+import org.puder.highlight.internal.HighlightMenuItem;
+
 import java.util.ArrayList;
 import java.util.List;
 

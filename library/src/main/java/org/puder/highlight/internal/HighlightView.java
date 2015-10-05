@@ -1,4 +1,4 @@
-package org.puder.highlight;
+package org.puder.highlight.internal;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,6 +9,8 @@ import android.graphics.PorterDuffXfermode;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+
+import org.puder.highlight.R;
 
 public class HighlightView extends RelativeLayout {
 

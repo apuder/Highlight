@@ -1,4 +1,4 @@
-package org.puder.highlight;
+package org.puder.highlight.internal;
 
 import android.view.Menu;
 import android.view.MenuItem;
