@@ -8,6 +8,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.WindowManager;
 
+import org.puder.highlight.R;
+
 public class HighlightDialogFragment extends DialogFragment {
 
     public interface HighlightDismissedListener {
@@ -16,8 +18,6 @@ public class HighlightDialogFragment extends DialogFragment {
 
 
     private HighlightDismissedListener listener;
-
-    private HighlightView              highlightView;
 
     private HighlightItem              item;
     private int                        left;
@@ -39,25 +39,15 @@ public class HighlightDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        highlightView = null;
-    }
-
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog overlayInfo = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar);
         // Making dialog content transparent.
         overlayInfo.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // Removing window dim normally visible when dialog are shown.
         overlayInfo.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-
-        // If user taps anywhere on the screen, dialog will be cancelled.
-        overlayInfo.setCancelable(true);
-        // Setting the content using prepared XML layout file.
-        highlightView = new HighlightView(getActivity());
+        overlayInfo.setContentView(R.layout.highlight);
+        HighlightView highlightView = (HighlightView) overlayInfo.findViewById(R.id.highlight_item);
         highlightView.setHighlightItem(item, left, top, right, bottom);
-        overlayInfo.setContentView(highlightView);
         highlightView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

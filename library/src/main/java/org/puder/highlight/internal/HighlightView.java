@@ -6,8 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import org.puder.highlight.R;
@@ -19,6 +18,7 @@ public class HighlightView extends RelativeLayout {
     private final float      outerRadiusScaleMultiplier = 1.8f;
 
     private Paint            eraserPaint;
+    private Paint            basicPaint;
 
     private HighlightItem    item;
     private int              left;
@@ -27,15 +27,15 @@ public class HighlightView extends RelativeLayout {
     private int              bottom;
 
 
-    public HighlightView(Context context) {
-        super(context);
+    public HighlightView(Context context, AttributeSet attrs) {
+        super(context, attrs);
         PorterDuffXfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY);
+        basicPaint = new Paint();
         eraserPaint = new Paint();
         eraserPaint.setColor(0xFFFFFF);
         eraserPaint.setAlpha(0);
         eraserPaint.setXfermode(xfermode);
         eraserPaint.setAntiAlias(true);
-        addButton(context);
     }
 
     public void setHighlightItem(HighlightItem item, int left, int top, int right, int bottom) {
@@ -47,26 +47,10 @@ public class HighlightView extends RelativeLayout {
         invalidate();
     }
 
-    private void addButton(Context context) {
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        int margin = (int) context.getResources().getDimension(R.dimen.default_button_margin);
-        params.setMargins(margin, margin, margin, margin);
-        Button b = new Button(context);
-        // noinspection ResourceType
-        b.setId(1);
-        b.setLayoutParams(params);
-        b.setText(R.string.default_button_label);
-        addView(b);
-    }
-
     @Override
     public void setOnClickListener(OnClickListener listener) {
         // Delegate the click listener to the button
-        // noinspection ResourceType
-        findViewById(1).setOnClickListener(listener);
+        findViewById(R.id.highlight_button).setOnClickListener(listener);
     }
 
     @Override
@@ -80,13 +64,13 @@ public class HighlightView extends RelativeLayout {
         float radius = width > height ? width / 2 : height / 2;
         Bitmap overlay = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(),
                 Bitmap.Config.ARGB_8888);
-        Canvas bufferCanvas = new Canvas(overlay);
-        bufferCanvas.drawColor(0xcc3d4353);// 0x3333B5E5);
+        Canvas overlayCanvas = new Canvas(overlay);
+        overlayCanvas.drawColor(0xcc3d4353);// 0x3333B5E5);
         eraserPaint.setAlpha(ALPHA_60_PERCENT);
-        bufferCanvas.drawCircle(cx, cy, radius * outerRadiusScaleMultiplier, eraserPaint);
+        overlayCanvas.drawCircle(cx, cy, radius * outerRadiusScaleMultiplier, eraserPaint);
         eraserPaint.setAlpha(0);
-        bufferCanvas.drawCircle(cx, cy, radius * innerRadiusScaleMultiplier, eraserPaint);
-        canvas.drawBitmap(overlay, 0, 0, new Paint());
+        overlayCanvas.drawCircle(cx, cy, radius * innerRadiusScaleMultiplier, eraserPaint);
+        canvas.drawBitmap(overlay, 0, 0, basicPaint);
         super.dispatchDraw(canvas);
     }
 }
