@@ -46,7 +46,7 @@ public class HighlightDialogFragment extends DialogFragment {
         // Removing window dim normally visible when dialog are shown.
         overlayInfo.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         overlayInfo.setContentView(R.layout.highlight);
-        HighlightView highlightView = (HighlightView) overlayInfo.findViewById(R.id.highlight_item);
+        HighlightView highlightView = (HighlightView) overlayInfo.findViewById(R.id.highlight_view);
         highlightView.setHighlightItem(item, left, top, right, bottom);
         highlightView.setOnClickListener(new View.OnClickListener() {
             @Override

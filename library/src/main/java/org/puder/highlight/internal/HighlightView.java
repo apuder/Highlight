@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.puder.highlight.R;
 
@@ -44,6 +45,11 @@ public class HighlightView extends RelativeLayout {
         this.top = top;
         this.right = right;
         this.bottom = bottom;
+
+        TextView title = (TextView) findViewById(R.id.highlight_title);
+        title.setText(item.titleId);
+        TextView descr = (TextView) findViewById(R.id.highlight_description);
+        descr.setText(item.descriptionId);
         invalidate();
     }
 

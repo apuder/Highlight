@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <org.puder.highlight.internal.HighlightView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/highlight_item"
+    android:id="@+id/highlight_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,5 +13,17 @@
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/default_button_margin"
         android:text="@string/default_button_label"/>
+
+    <TextView
+        android:id="@+id/highlight_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/highlight_button"/>
+
+    <TextView
+        android:id="@+id/highlight_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/highlight_description"/>
 
 </org.puder.highlight.internal.HighlightView>
