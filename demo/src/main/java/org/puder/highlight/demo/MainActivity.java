@@ -19,9 +19,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         highlightManager = new HighlightManager(this);
+        highlightManager.reshowAllHighlights();
         highlightManager.addView(R.id.text).setTitle(R.string.highlight1_title)
                 .setDescriptionId(R.string.highlight1_descr);
         highlightManager.addView(R.id.button).setTitle(R.string.highlight2_title)
+                .setDescriptionId(R.string.highlight2_descr);
+        highlightManager.addView(R.id.text2).setTitle(R.string.highlight2_title)
                 .setDescriptionId(R.string.highlight2_descr);
     }
 

@@ -2,9 +2,11 @@ package org.puder.highlight.internal;
 
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -20,18 +22,10 @@ public class HighlightDialogFragment extends DialogFragment {
     private HighlightDismissedListener listener;
 
     private HighlightItem              item;
-    private int                        left;
-    private int                        top;
-    private int                        right;
-    private int                        bottom;
 
 
-    public void setHighlightItem(HighlightItem item, int left, int top, int right, int bottom) {
+    public void setHighlightItem(HighlightItem item) {
         this.item = item;
-        this.left = left;
-        this.top = top;
-        this.right = right;
-        this.bottom = bottom;
     }
 
     public void setListener(HighlightDismissedListener listener) {
@@ -45,9 +39,26 @@ public class HighlightDialogFragment extends DialogFragment {
         overlayInfo.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // Removing window dim normally visible when dialog are shown.
         overlayInfo.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        overlayInfo.setContentView(R.layout.highlight);
+        if (item == null) {
+            /*
+             * Although this fragment is not retained, it seems that Android
+             * will re-create it during an orientation change. In this case item
+             * == null. Just return the empty dialog here and dismiss the dialog
+             * immediately. It will be immediately disposed once the fragment is
+             * removed after the orientation change.
+             */
+            dismissAllowingStateLoss();
+            return overlayInfo;
+        }
+        WindowManager wm = getActivity().getWindowManager();
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int cy = item.screenTop + (item.screenBottom - item.screenTop) / 2;
+        overlayInfo.setContentView(size.y / 2 > cy ? R.layout.highlight_top
+                : R.layout.highlight_bottom);
         HighlightView highlightView = (HighlightView) overlayInfo.findViewById(R.id.highlight_view);
-        highlightView.setHighlightItem(item, left, top, right, bottom);
+        highlightView.setHighlightItem(item);
         highlightView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

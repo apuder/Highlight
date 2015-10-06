@@ -16,14 +16,12 @@
 
     <TextView
         android:id="@+id/highlight_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/HighlightDescription"
         android:layout_above="@+id/highlight_button"/>
 
     <TextView
         android:id="@+id/highlight_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/HighlightTitle"
         android:layout_above="@+id/highlight_description"/>
 
 </org.puder.highlight.internal.HighlightView>

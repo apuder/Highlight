@@ -6,5 +6,6 @@
     <string name="highlight2_title">Highlight 2</string>
     <string name="highlight2_descr">Some explanation for the second highlight.</string>
     <string name="highlight3_title">Highlight 3</string>
-    <string name="highlight3_descr">Some explanation for the third highlight.</string>
+    <string name="highlight3_descr">Some explanation for the third highlight. A longer string to
+        force a second line in the help text.</string>
 </resources>

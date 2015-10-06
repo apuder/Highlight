@@ -22,10 +22,6 @@ public class HighlightView extends RelativeLayout {
     private Paint            basicPaint;
 
     private HighlightItem    item;
-    private int              left;
-    private int              top;
-    private int              right;
-    private int              bottom;
 
 
     public HighlightView(Context context, AttributeSet attrs) {
@@ -39,17 +35,16 @@ public class HighlightView extends RelativeLayout {
         eraserPaint.setAntiAlias(true);
     }
 
-    public void setHighlightItem(HighlightItem item, int left, int top, int right, int bottom) {
+    public void setHighlightItem(HighlightItem item) {
         this.item = item;
-        this.left = left;
-        this.top = top;
-        this.right = right;
-        this.bottom = bottom;
-
-        TextView title = (TextView) findViewById(R.id.highlight_title);
-        title.setText(item.titleId);
-        TextView descr = (TextView) findViewById(R.id.highlight_description);
-        descr.setText(item.descriptionId);
+        if (item.titleId != -1) {
+            TextView title = (TextView) findViewById(R.id.highlight_title);
+            title.setText(item.titleId);
+        }
+        if (item.descriptionId != -1) {
+            TextView descr = (TextView) findViewById(R.id.highlight_description);
+            descr.setText(item.descriptionId);
+        }
         invalidate();
     }
 
@@ -63,10 +58,10 @@ public class HighlightView extends RelativeLayout {
     protected void dispatchDraw(Canvas canvas) {
         int[] location = new int[2];
         getLocationOnScreen(location);
-        int width = right - left;
-        int height = bottom - top;
-        int cx = left + width / 2 - location[0];
-        int cy = top + height / 2 - location[1];
+        int width = item.screenRight - item.screenLeft;
+        int height = item.screenBottom - item.screenTop;
+        int cx = item.screenLeft + width / 2 - location[0];
+        int cy = item.screenTop + height / 2 - location[1];
         float radius = width > height ? width / 2 : height / 2;
         Bitmap overlay = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(),
                 Bitmap.Config.ARGB_8888);

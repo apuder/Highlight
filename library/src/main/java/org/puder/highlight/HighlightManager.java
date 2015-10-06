@@ -1,11 +1,13 @@
 package org.puder.highlight;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import org.puder.highlight.internal.HighlightContentViewItem;
@@ -18,60 +20,49 @@ import java.util.List;
 
 public class HighlightManager implements HighlightDialogFragment.HighlightDismissedListener {
 
-    final private static String TAG_FRAGMENT = "HIGHLIGHT";
+    final private static String TAG_FRAGMENT   = "HIGHLIGHT_FRAG";
+    final private static String SHARE_PREF     = "HIGHLIGHT_PREFS";
 
     private FragmentActivity    activity;
+    private SharedPreferences   prefs;
     private List<HighlightItem> items;
+    private int                 numItemsToShow = 0;
 
 
     public HighlightManager(FragmentActivity activity) {
         this.activity = activity;
+        prefs = activity.getSharedPreferences(SHARE_PREF, Context.MODE_PRIVATE);
         items = new ArrayList<>();
-        final View view = activity.findViewById(android.R.id.content);
-        ViewTreeObserver o = view.getViewTreeObserver();
-        o.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                show();
-            }
-        });
     }
 
     public HighlightContentViewItem addView(int id) {
-        HighlightContentViewItem item = new HighlightContentViewItem(id);
+        final HighlightContentViewItem item = new HighlightContentViewItem(id);
+        String key = "view-" + Integer.toString(id);
+        if (!isFirstTime(key)) {
+            return item;
+        }
         items.add(item);
+        activity.findViewById(id).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                    int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (left == 0 && top == 0 && right == 0 && bottom == 0) {
+                    return;
+                }
+                v.removeOnLayoutChangeListener(this);
+                setScreenPosition(v, item);
+            }
+        });
         return item;
     }
 
     public HighlightMenuItem addMenuItem(Menu menu, int menuItemId) {
-        HighlightMenuItem item = new HighlightMenuItem(menu, menuItemId);
+        final HighlightMenuItem item = new HighlightMenuItem(menu, menuItemId);
+        String key = "menu-" + Integer.toString(menuItemId);
+        if (!isFirstTime(key)) {
+            return item;
+        }
         items.add(item);
-        return item;
-    }
-
-    public void show() {
-        if (items.isEmpty()) {
-            return;
-        }
-        HighlightItem item = items.remove(0);
-        if (item instanceof HighlightMenuItem) {
-            showMenuItem((HighlightMenuItem) item);
-        }
-        if (item instanceof HighlightContentViewItem) {
-            showContentViewItem((HighlightContentViewItem) item);
-        }
-    }
-
-    private void showContentViewItem(HighlightContentViewItem item) {
-        View view = activity.findViewById(item.getContentViewId());
-        int[] location = new int[2];
-        view.getLocationOnScreen(location);
-        showHighlight(item, location[0], location[1], location[0] + view.getMeasuredWidth(),
-                location[1] + view.getMeasuredHeight());
-    }
-
-    private void showMenuItem(final HighlightMenuItem item) {
         final MenuItem it = item.getMenuItem();
 
         ImageView button = new ImageView(activity, null, android.R.attr.actionButtonStyle);
@@ -89,20 +80,48 @@ public class HighlightManager implements HighlightDialogFragment.HighlightDismis
                 if (left == 0 && top == 0 && right == 0 && bottom == 0) {
                     return;
                 }
-
-                if (right == oldRight && left == oldLeft && bottom == oldBottom && top == oldTop) {
-                    return;
-                }
-                int[] location = new int[2];
-                v.getLocationOnScreen(location);
-                showHighlight(item, location[0], location[1], location[0] + right - left,
-                        location[1] + bottom - top);
+                setScreenPosition(v, item);
             }
         });
         it.setActionView(button);
+        return item;
     }
 
-    private void showHighlight(HighlightItem item, int left, int top, int right, int bottom) {
+    private void setScreenPosition(View v, HighlightItem item) {
+        int[] location = new int[2];
+        v.getLocationOnScreen(location);
+        int screenLeft = location[0];
+        int screenTop = location[1];
+        int screenRight = location[0] + v.getMeasuredWidth();
+        int screenBottom = location[1] + v.getMeasuredHeight();
+        item.setScreenPosition(screenLeft, screenTop, screenRight, screenBottom);
+        numItemsToShow++;
+        if (numItemsToShow == items.size()) {
+            show();
+        }
+    }
+
+    private boolean isFirstTime(String key) {
+        if (prefs.getBoolean(key, true)) {
+            Editor editor = prefs.edit();
+            editor.putBoolean(key, false);
+            editor.apply();
+            return true;
+        }
+        return false;
+    }
+
+    public void reshowAllHighlights() {
+        Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    private void show() {
+        if (items.isEmpty()) {
+            return;
+        }
+        HighlightItem item = items.remove(0);
         FragmentManager fm = activity.getSupportFragmentManager();
         HighlightDialogFragment fragment = (HighlightDialogFragment) fm
                 .findFragmentByTag(TAG_FRAGMENT);
@@ -113,13 +132,14 @@ public class HighlightManager implements HighlightDialogFragment.HighlightDismis
         }
         fragment = new HighlightDialogFragment();
         fragment.setListener(this);
-        fragment.setHighlightItem(item, left, top, right, bottom);
+        fragment.setHighlightItem(item);
         transaction.add(fragment, TAG_FRAGMENT);
         transaction.commit();
     }
 
     @Override
     public void onHighlightDismissed() {
+        numItemsToShow--;
         show();
     }
 }
