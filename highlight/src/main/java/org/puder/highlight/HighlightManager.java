@@ -37,10 +37,6 @@ public class HighlightManager implements HighlightDialogFragment.HighlightDismis
 
     public HighlightContentViewItem addView(int id) {
         final HighlightContentViewItem item = new HighlightContentViewItem(id);
-        String key = "view-" + Integer.toString(id);
-        if (!isFirstTime(key)) {
-            return item;
-        }
         items.add(item);
         activity.findViewById(id).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -58,10 +54,6 @@ public class HighlightManager implements HighlightDialogFragment.HighlightDismis
 
     public HighlightMenuItem addMenuItem(Menu menu, int menuItemId) {
         final HighlightMenuItem item = new HighlightMenuItem(menu, menuItemId);
-        String key = "menu-" + Integer.toString(menuItemId);
-        if (!isFirstTime(key)) {
-            return item;
-        }
         items.add(item);
         final MenuItem it = item.getMenuItem();
 
@@ -101,7 +93,15 @@ public class HighlightManager implements HighlightDialogFragment.HighlightDismis
         }
     }
 
-    private boolean isFirstTime(String key) {
+    private boolean isFirstTime(HighlightItem item) {
+        String key = "";
+        if (item instanceof HighlightContentViewItem) {
+            key = "view-" + ((HighlightContentViewItem) item).getContentViewId();
+        }
+        if (item instanceof HighlightMenuItem) {
+            key = "menu-" + ((HighlightMenuItem) item).getMenuItem();
+        }
+
         if (prefs.getBoolean(key, true)) {
             Editor editor = prefs.edit();
             editor.putBoolean(key, false);
@@ -122,6 +122,15 @@ public class HighlightManager implements HighlightDialogFragment.HighlightDismis
             return;
         }
         HighlightItem item = items.remove(0);
+        if (!isFirstTime(item)) {
+            /*
+             * Item was already shown. Recurse to show() to give other items the
+             * chance to be shown.
+             */
+            numItemsToShow--;
+            show();
+            return;
+        }
         FragmentManager fm = activity.getSupportFragmentManager();
         HighlightDialogFragment fragment = (HighlightDialogFragment) fm
                 .findFragmentByTag(TAG_FRAGMENT);
