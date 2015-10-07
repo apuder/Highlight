@@ -5,26 +5,27 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="Hello"/>
+        android:text="Some text"/>
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="200dp"
-        android:layout_marginTop="200dp"
-        android:text="World"/>
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="220dp"
+        android:layout_alignParentRight="true"
+        android:text="Button"/>
 
     <TextView
         android:id="@+id/text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        android:text="Second text"/>
+        android:layout_margin="30dp"
+        android:text="More text"/>
 
 </RelativeLayout>

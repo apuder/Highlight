@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">Highlight Demo</string>
 
-    <string name="highlight1_title">Highlight 1</string>
-    <string name="highlight1_descr">Some explanation for the first highlight.</string>
-    <string name="highlight2_title">Highlight 2</string>
-    <string name="highlight2_descr">Some explanation for the second highlight.</string>
-    <string name="highlight3_title">Highlight 3</string>
-    <string name="highlight3_descr">Some explanation for the third highlight. A longer string to
-        force a second line in the help text.</string>
+    <string name="highlight1_title">Highlight</string>
+    <string name="highlight1_descr">Highlight any UI element and provide a quick
+        one-time description for the user.</string>
+    <string name="highlight2_title">Button Action</string>
+    <string name="highlight2_descr">The size of the highlight will be calculated based
+        on the size of the UI element to highlight.</string>
+    <string name="highlight3_title">Another Highlight</string>
+    <string name="highlight3_descr">Highlights are shown only the first time the app is used.</string>
+    <string name="highlight4_title">ActionBar</string>
+    <string name="highlight4_descr">It is also possible to highlight ActionBar menu items.</string>
 </resources>
