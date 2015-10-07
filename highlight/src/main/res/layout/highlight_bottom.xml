@@ -7,11 +7,7 @@
 
     <Button
         android:id="@+id/highlight_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/default_button_margin"
+        style="@style/HighlightButton"
         android:text="@string/default_button_label"/>
 
     <TextView
