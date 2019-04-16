@@ -24,7 +24,7 @@ your application:
 ~~~
 dependencies {
     // Other dependencies...
-    compile project(':highlight')
+    implementation project(':highlight')
 }
 ~~~
 
