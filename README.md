@@ -41,7 +41,7 @@ highlightManager.addView(R.id.some_widget).setTitle(R.string.title)
 ~~~
 
 Refer to the
-[demo app](https://github.com/Dheeraj1998/Highlight/blob/master/demo/app/src/main/java/org/puder/highlight/demo/MainActivity.java)
+[demo app](https://github.com/apuder/Highlight/blob/master/demo/app/src/main/java/org/puder/highlight/demo/MainActivity.java)
 to see a complete example.
 
 Status
