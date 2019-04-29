@@ -4,10 +4,8 @@ Highlight
 Highlight is an Android library that highlights UI elements. It can be integrated into other
 Android apps to showcase an app's usage. The following screenshots demonstrate the concept:
 
-<img src='./doc/screenshot-1.png' width='270' height='480' />
-<img src='./doc/screenshot-2.png' width='270' height='480' />
-<img src='./doc/screenshot-3.png' width='270' height='480' />
-<img src='./doc/screenshot-4.png' width='270' height='480' />
+<p align = "center"><img src="./doc/screenshot-1.png" width = 33%"></img> <img src="./doc/screenshot-2.png" width = 33%"></img></p>
+<p align = "center"><img src="./doc/screenshot-3.png" width = 33%"></img> <img src="./doc/screenshot-4.png" width = 33%"></img></p>
 
 
 Integration
@@ -26,7 +24,7 @@ your application:
 ~~~
 dependencies {
     // Other dependencies...
-    compile project(':highlight')
+    implementation project(':highlight')
 }
 ~~~
 
@@ -43,7 +41,7 @@ highlightManager.addView(R.id.some_widget).setTitle(R.string.title)
 ~~~
 
 Refer to the
-[demo app](https://github.com/apuder/Highlight/blob/master/demo/src/main/java/org/puder/highlight/demo/MainActivity.java)
+[demo app](https://github.com/apuder/Highlight/blob/master/demo/app/src/main/java/org/puder/highlight/demo/MainActivity.java)
 to see a complete example.
 
 Status
